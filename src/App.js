@@ -1,37 +1,50 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI'
 import './App.css'
+import * as BooksAPI from './utils/BooksAPI'
 import SearchBooks from './SearchBooks'
 import DashboardBooks from './DashboardBooks'
 import {
   BrowserRouter as Router,
-  Link,
   Route
-} from 'react-router-dom';
+} from 'react-router-dom'
 
 class BooksApp extends React.Component {
-	state = {
-		books: []
+	constructor(props) { 
+		super(props);
+
+		this.state = {
+			books: []
+		};
+
+		this.getAllBooks();
 	}
 
-	componentDidMount() {
-		BooksAPI.getAll()
-			.then((books) => {
-				console.log(books)
-				this.setState(() => ({
-					books
-				}))
-			})
+	getAllBooks = () => {
+		BooksAPI.getAll().then((books) => {
+			this.setState(() => ({
+				books
+			}))
+		})
 	}
 
 	render() {
 		return (
 			<Router>
 				<div className="app">
-					<Route exact path='/' component={DashboardBooks} />
-					<Route path='/search' component={SearchBooks} />
+					<Route exact path='/' render={() => (
+						<DashboardBooks
+							books={ this.state.books}
+							getAllBooks={this.getAllBooks}
+						/>
+					)} />
+					<Route path='/search' render={() => ( 
+						<SearchBooks 
+							books={ this.state.books}
+							getAllBooks={this.getAllBooks}
+						/>
+					)} />
 				</div>
-			</Router>	
+			</Router>
 		)
 	}
 }
