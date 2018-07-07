@@ -8,12 +8,12 @@ class SearchBooks extends Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			query: '',
+			bookSearchResults:[]
+		}
+		
 		this.handleChange = this.handleChange.bind(this);
-	}
-
-	state = {
-		query: '',
-		bookSearchResults:[]
 	}
 
 	static propTypes = {
@@ -28,7 +28,6 @@ class SearchBooks extends Component {
 		this.setState({ 
 			query: query
 		}, () => {
-			//setState Callback
 			this.searchBook(query)
 		})
 	}
@@ -61,7 +60,7 @@ class SearchBooks extends Component {
 		const { bookSearchResults } = this.state
 		
 
-
+		// adding shelf info to searchresults
 		bookSearchResults.forEach(bookItem => {
 			const matchedBooks = books.filter(book => book.id === bookItem.id)
 
