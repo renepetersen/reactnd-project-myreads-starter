@@ -4,23 +4,26 @@ import Book from './Book'
 
 class BookShelf extends Component {
 	static propTypes = {
-		book: PropTypes.array.isRequired,
+		books: PropTypes.array.isRequired,
 		getAllBooks: PropTypes.func
 	}
 
 	render() {
 		const {
+			shelf,
 			bookshelfTitle,
-			book,
+			books,
 			getAllBooks
 		} = this.props
 
+		const booksShelfSelection = books.filter(book => book.shelf === shelf)
+		
 		return (
 			<div className="bookshelf">
-				<h2 className="bookshelf-title">{bookshelfTitle} ({book.length})</h2>
+				<h2 className="bookshelf-title">{bookshelfTitle} ({booksShelfSelection.length})</h2>
 				<div className="bookshelf-books">
 					<ol className="books-grid">
-						{book.map((book) => (
+						{booksShelfSelection.map((book) => (
 							<li key={book.id}>
 								<Book 
 									book={book}

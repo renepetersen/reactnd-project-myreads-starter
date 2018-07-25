@@ -14,10 +14,7 @@ class Book extends Component {
 			getAllBooks
 		} = this.props
 		
-		if(!book.hasOwnProperty('imageLinks')) {
-			//console.log(`this is a problematic json object: ${book.id} - ${book.title}`);
-			return null;
-		};
+		var backgroundImageURL = (!book.hasOwnProperty('imageLinks')) ? '' : book.imageLinks.thumbnail
 
 		return (
 			<div className="book">
@@ -26,7 +23,7 @@ class Book extends Component {
 						style={{ 
 							width: 128,
 							height: 193,
-							backgroundImage: `url(${book.imageLinks.thumbnail})`
+							backgroundImage: `url(${backgroundImageURL})`
 					}}></div>
 		
 					<BookShelfChanger 

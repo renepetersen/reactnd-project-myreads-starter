@@ -15,9 +15,11 @@ class DashboardBooks extends Component {
 			getAllBooks
 		} = this.props
 
-		const booksReading = books.filter(book => book.shelf === 'currentlyReading')
-		const booksWantToRead = books.filter(book => book.shelf === 'wantToRead')
-		const booksRead = books.filter(book => book.shelf === 'read')
+		const shelves = {
+			currentlyReading: ['Currently Reading', 'currentlyReading'],
+			wantToRead: ['Want to Read', 'wantToRead'],
+			read: ['Read', 'read']
+		}
 
 		return (
 			<div className="list-books">
@@ -26,23 +28,14 @@ class DashboardBooks extends Component {
 				</div>
 
 				<div className="list-books-content">
-					<div>
-						<BookShelf 
-							bookshelfTitle="Currently Reading"
-							book={booksReading}
+					{ Object.keys(shelves).map((shelf) =>
+						<BookShelf key={shelf}
+							shelf={shelves[shelf][1]}
+							bookshelfTitle={shelves[shelf][0]}
+							books={books}
 							getAllBooks={getAllBooks}
 						/>
-						<BookShelf 
-							bookshelfTitle="Want to Read"
-							book={booksWantToRead}
-							getAllBooks={getAllBooks}
-						/>
-						<BookShelf 
-							bookshelfTitle="Read"
-							book={booksRead}
-							getAllBooks={getAllBooks}
-						/>
-					</div>
+					)}
 				</div>
 				<div className="open-search">
 					<Link 

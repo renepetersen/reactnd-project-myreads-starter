@@ -33,13 +33,13 @@ class BooksApp extends React.Component {
 				<div className="app">
 					<Route exact path='/' render={() => (
 						<DashboardBooks
-							books={ this.state.books}
+							books={this.state.books}
 							getAllBooks={this.getAllBooks}
 						/>
 					)} />
 					<Route path='/search' render={() => ( 
 						<SearchBooks 
-							books={ this.state.books}
+							books={this.state.books}
 							getAllBooks={this.getAllBooks}
 						/>
 					)} />

@@ -35,16 +35,18 @@ class SearchBooks extends Component {
 	searchBook = (query) => {
 		if(query) {
 			BooksAPI.search(query).then((result) => {
-				(typeof result.length === 'number' && result.length !== 0) 
-				? (
-					this.setState({
-						bookSearchResults: result
-					})
-				) : (
-					this.setState({
-						bookSearchResults:[]
-					})
-				)
+				if(query === this.state.query) {
+					(typeof result.length === 'number' && result.length !== 0) 
+					? (
+						this.setState({
+							bookSearchResults: result
+						})
+					) : (
+						this.setState({
+							bookSearchResults:[]
+						})
+					)
+				}
 			})
 		} else {
 			this.setState({ bookSearchResults:[] });
@@ -67,11 +69,12 @@ class SearchBooks extends Component {
 			bookItem.shelf = matchedBooks.length > 0 ? matchedBooks[0].shelf :'none'
 		});
 
-
-		const booksReading = bookSearchResults.filter(book => book.shelf === 'currentlyReading')
-		const booksWantToRead = bookSearchResults.filter(book => book.shelf === 'wantToRead')
-		const booksRead = bookSearchResults.filter(book => book.shelf === 'read')
-		const booksNone = bookSearchResults.filter(book => book.shelf === 'none')
+		const shelves = {
+			currentlyReading: ['Currently Reading', 'currentlyReading'],
+			wantToRead: ['Want to Read', 'wantToRead'],
+			read: ['Read', 'read'],
+			none: ['None', 'none']
+		}
 
 		return (
 			<div className="search-books">
@@ -96,32 +99,14 @@ class SearchBooks extends Component {
 				<div className="search-books-results">
 					{bookSearchResults.length !== 0 ? (
 						<div>
-							{booksReading.length !== 0 && (
-								<BookShelf 
-									bookshelfTitle="Currently Reading"
-									book={booksReading}
+							{ Object.keys(shelves).map((shelf) =>
+								<BookShelf key={shelf}
+									shelf={shelves[shelf][1]}
+									bookshelfTitle={shelves[shelf][0]}
+									books={bookSearchResults}
 									getAllBooks={getAllBooks}
 								/>
 							)}
-							{booksWantToRead.length !== 0 && (
-								<BookShelf 
-									bookshelfTitle="Want to Read"
-									book={booksWantToRead}
-									getAllBooks={getAllBooks}
-								/>
-							)}
-							{booksRead.length !== 0 && (
-								<BookShelf 
-									bookshelfTitle="Read"
-									book={booksRead}
-									getAllBooks={getAllBooks}
-								/>
-							)}
-							<BookShelf 
-								bookshelfTitle="Other search results"
-								book={booksNone}
-								getAllBooks={getAllBooks}
-							/>
 						</div>
 					) : (
 						<p>No results</p>
